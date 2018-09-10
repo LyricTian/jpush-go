@@ -1,6 +1,6 @@
 # JPush Golang Client
 
-[![ReportCard][reportcard-image]][reportcard-url] [![GoDoc][godoc-image]][godoc-url] [![License][license-image]][license-url]
+[![Build][Build-Status-Image]][Build-Status-Url] [![Codecov][codecov-image]][codecov-url] [![ReportCard][reportcard-image]][reportcard-url] [![GoDoc][godoc-image]][godoc-url] [![License][license-image]][license-url]
 
 ## 快速开始
 
@@ -75,6 +75,10 @@ $ ./push
 
     Copyright (c) 2018 Lyric
 
+[Build-Status-Url]: https://travis-ci.org/LyricTian/jpush-go
+[Build-Status-Image]: https://travis-ci.org/LyricTian/jpush-go.svg?branch=master
+[codecov-url]: https://codecov.io/gh/LyricTian/jpush-go
+[codecov-image]: https://codecov.io/gh/LyricTian/jpush-go/branch/master/graph/badge.svg
 [reportcard-url]: https://goreportcard.com/report/github.com/LyricTian/jpush-go
 [reportcard-image]: https://goreportcard.com/badge/github.com/LyricTian/jpush-go
 [godoc-url]: https://godoc.org/github.com/LyricTian/jpush-go

@@ -1,6 +1,7 @@
 package jpush
 
 import (
+	"sync/atomic"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -21,23 +22,23 @@ func TestQueue(t *testing.T) {
 		q := NewQueue(2)
 		q.Start()
 
-		var data int
+		var data int64
 		q.Push(&testJob{
 			payload: 0,
 			callback: func(result int) {
-				data += result
+				atomic.AddInt64(&data, int64(result))
 			},
 		})
 		q.Push(&testJob{
 			payload: 0,
 			callback: func(result int) {
-				data += result
+				atomic.AddInt64(&data, int64(result))
 			},
 		})
 		q.Push(&testJob{
 			payload: 0,
 			callback: func(result int) {
-				data += result
+				atomic.AddInt64(&data, int64(result))
 			},
 		})
 		q.Stop()
