@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"sync"
+
+	"github.com/LyricTian/queue"
 )
 
 // NewClient 创建推送客户端实例
@@ -16,7 +18,7 @@ func NewClient(maxThread int, opts ...Option) *Client {
 
 	cli := &Client{
 		opts:      &o,
-		queue:     NewQueue(maxThread),
+		queue:     queue.NewListQueue(maxThread),
 		cidClient: NewCIDClient(1000, opts...),
 	}
 
@@ -25,7 +27,7 @@ func NewClient(maxThread int, opts ...Option) *Client {
 			return newPushJob(cli.opts, cli.queue)
 		},
 	}
-	cli.queue.Start()
+	cli.queue.Run()
 
 	return cli
 }
@@ -33,7 +35,7 @@ func NewClient(maxThread int, opts ...Option) *Client {
 // Client 推送客户端
 type Client struct {
 	opts      *options
-	queue     *Queue
+	queue     queue.Queuer
 	cidClient *CIDClient
 	jobPool   *sync.Pool
 }
@@ -51,7 +53,7 @@ func (c *Client) fillCID(ctx context.Context, payload *Payload) error {
 
 // Terminate 终止客户端
 func (c *Client) Terminate() {
-	c.queue.Stop()
+	c.queue.Terminate()
 }
 
 // GetPushID 获取推送ID

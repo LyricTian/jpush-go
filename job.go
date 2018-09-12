@@ -4,9 +4,11 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	"github.com/LyricTian/queue"
 )
 
-func newPushJob(opts *options, queue *Queue) *pushJob {
+func newPushJob(opts *options, queue queue.Queuer) *pushJob {
 	return &pushJob{
 		opts:  opts,
 		queue: queue,
@@ -15,7 +17,7 @@ func newPushJob(opts *options, queue *Queue) *pushJob {
 
 type pushJob struct {
 	opts     *options
-	queue    *Queue
+	queue    queue.Queuer
 	payload  *Payload
 	ctx      context.Context
 	callback PushResultHandle
@@ -27,7 +29,7 @@ func (j *pushJob) Reset(ctx context.Context, payload *Payload, callback PushResu
 	j.callback = callback
 }
 
-func (j *pushJob) Call() {
+func (j *pushJob) Job() {
 	resp, err := internalRequest(j.ctx, j.opts, "/v3/push", http.MethodPost, j.payload.Reader())
 	if err != nil {
 		j.callback(nil, err)
