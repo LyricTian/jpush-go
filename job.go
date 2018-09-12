@@ -32,13 +32,16 @@ func (j *pushJob) Reset(ctx context.Context, payload *Payload, callback PushResu
 func (j *pushJob) Job() {
 	resp, err := internalRequest(j.ctx, j.opts, "/v3/push", http.MethodPost, j.payload.Reader())
 	if err != nil {
-		j.callback(nil, err)
 		if e, ok := err.(*Error); ok {
 			// 如果当前推送频次超出限制，则将任务重新放入队列，并休眠等待
 			if e.StatusCode == 429 && e.HeaderItem.XRateLimitReset > 0 {
 				j.queue.Push(j)
 				time.Sleep(time.Second * time.Duration(e.HeaderItem.XRateLimitReset))
+			} else {
+				j.callback(nil, err)
 			}
+		} else {
+			j.callback(nil, err)
 		}
 		return
 	}
