@@ -31,7 +31,7 @@ type Payload struct {
 	CID          string        `json:"cid,omitempty"`          // 推送唯一标识符
 }
 
-// Reader 序列化为JSON流
+// Reader 序列化为 JSON 流
 func (p *Payload) Reader() io.Reader {
 	buf := new(bytes.Buffer)
 	json.NewEncoder(buf).Encode(p)
@@ -49,7 +49,7 @@ type Platform struct {
 	Value []string
 }
 
-// MarshalJSON 实现json接口
+// MarshalJSON 实现 JSON 接口
 func (p *Platform) MarshalJSON() ([]byte, error) {
 	if p.IsAll {
 		return json.Marshal("all")
@@ -93,7 +93,7 @@ type Audience struct {
 	Value map[string][]string
 }
 
-// MarshalJSON 实现json接口
+// MarshalJSON 实现 JSON 接口
 func (a *Audience) MarshalJSON() ([]byte, error) {
 	if a.IsAll {
 		return json.Marshal("all")
@@ -152,12 +152,46 @@ func (a *Audience) SetAbTest(abtests ...string) *Audience {
 	return a.SetValue("abtest", abtests...)
 }
 
+// NewNotification 创建通知实例
+func NewNotification() *Notification {
+	return new(Notification)
+}
+
 // Notification 通知
 type Notification struct {
 	Alert    string                `json:"alert,omitempty"`
 	Android  *AndroidNotification  `json:"android,omitempty"`
 	IOS      *IOSNotification      `json:"ios,omitempty"`
 	WinPhone *WinPhoneNotification `json:"winphone,omitempty"`
+}
+
+// SetAlert 设定通知内容
+func (n *Notification) SetAlert(alert string) *Notification {
+	n.Alert = alert
+	return n
+}
+
+// SetAndroidNotification 设定 Android 平台上的通知
+func (n *Notification) SetAndroidNotification(android *AndroidNotification) *Notification {
+	n.Android = android
+	return n
+}
+
+// SetIOSNotification 设定 iOS 平台上的通知
+func (n *Notification) SetIOSNotification(ios *IOSNotification) *Notification {
+	n.IOS = ios
+	return n
+}
+
+// SetWinPhoneNotification 设定 Windows Phone 平台上的通知
+func (n *Notification) SetWinPhoneNotification(winPhone *WinPhoneNotification) *Notification {
+	n.WinPhone = winPhone
+	return n
+}
+
+// NewAndroidNotification 创建 Android 平台上的通知实例
+func NewAndroidNotification() *AndroidNotification {
+	return new(AndroidNotification)
 }
 
 // AndroidNotification Android 平台上的通知
@@ -175,6 +209,29 @@ type AndroidNotification struct {
 	Extras     map[string]interface{} `json:"extras,omitempty"`
 }
 
+// SetAlert 通知内容
+func (n *AndroidNotification) SetAlert(alert string) *AndroidNotification {
+	n.Alert = alert
+	return n
+}
+
+// SetTitle 通知标题
+func (n *AndroidNotification) SetTitle(title string) *AndroidNotification {
+	n.Title = title
+	return n
+}
+
+// SetExtras 扩展字段
+func (n *AndroidNotification) SetExtras(extras map[string]interface{}) *AndroidNotification {
+	n.Extras = extras
+	return n
+}
+
+// NewIOSNotification 创建 iOS 平台上的通知实例
+func NewIOSNotification() *IOSNotification {
+	return new(IOSNotification)
+}
+
 // IOSNotification iOS 平台上 APNs 通知结构
 type IOSNotification struct {
 	Alert            interface{}            `json:"alert"`
@@ -186,12 +243,53 @@ type IOSNotification struct {
 	Extras           map[string]interface{} `json:"extras,omitempty"`
 }
 
+// SetAlert 通知内容
+func (n *IOSNotification) SetAlert(alert interface{}) *IOSNotification {
+	n.Alert = alert
+	return n
+}
+
+// SetBadge 应用角标
+func (n *IOSNotification) SetBadge(badge interface{}) *IOSNotification {
+	n.Badge = badge
+	return n
+}
+
+// SetExtras 扩展字段
+func (n *IOSNotification) SetExtras(extras map[string]interface{}) *IOSNotification {
+	n.Extras = extras
+	return n
+}
+
+// NewWinPhoneNotification 创建 Windows Phone 平台上的通知实例
+func NewWinPhoneNotification() *WinPhoneNotification {
+	return new(WinPhoneNotification)
+}
+
 // WinPhoneNotification Windows Phone 平台上的通知
 type WinPhoneNotification struct {
 	Alert    string                 `json:"alert"`
 	Title    string                 `json:"title,omitempty"`
 	OpenPage string                 `json:"_open_page,omitempty"`
 	Extras   map[string]interface{} `json:"extras,omitempty"`
+}
+
+// SetAlert 通知内容
+func (n *WinPhoneNotification) SetAlert(alert string) *WinPhoneNotification {
+	n.Alert = alert
+	return n
+}
+
+// SetTitle 通知标题
+func (n *WinPhoneNotification) SetTitle(title string) *WinPhoneNotification {
+	n.Title = title
+	return n
+}
+
+// SetExtras 扩展字段
+func (n *WinPhoneNotification) SetExtras(extras map[string]interface{}) *WinPhoneNotification {
+	n.Extras = extras
+	return n
 }
 
 // Message 自定义消息
@@ -209,6 +307,11 @@ type SmsMessage struct {
 	DelayTime int         `json:"delay_time"`
 }
 
+// NewOptions 创建可选参数实例
+func NewOptions() *Options {
+	return new(Options)
+}
+
 // Options 可选参数
 type Options struct {
 	SendNO          int    `json:"sendno,omitempty"`
@@ -217,4 +320,10 @@ type Options struct {
 	ApnsProduction  bool   `json:"apns_production"`
 	ApnsCollapseID  string `json:"apns_collapse_id,omitempty"`
 	BigPushDuration int    `json:"big_push_duration,omitempty"`
+}
+
+// SetApnsProduction 设定 APNs 是否生产环境
+func (o *Options) SetApnsProduction(prod bool) *Options {
+	o.ApnsProduction = prod
+	return o
 }
