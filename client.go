@@ -86,7 +86,7 @@ func (c *Client) PushValidate(ctx context.Context, payload *Payload, callback Pu
 		return err
 	}
 
-	resp, err := internalRequest(ctx, c.opts, "/v3/push/validate", http.MethodPost, payload.Reader())
+	resp, err := pushRequest(ctx, c.opts, "/v3/push/validate", http.MethodPost, payload.Reader())
 	if err != nil {
 		return err
 	}

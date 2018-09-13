@@ -3,6 +3,7 @@ package jpush
 import (
 	"context"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/LyricTian/queue"
@@ -30,7 +31,7 @@ func (j *pushJob) Reset(ctx context.Context, payload *Payload, callback PushResu
 }
 
 func (j *pushJob) Job() {
-	resp, err := internalRequest(j.ctx, j.opts, "/v3/push", http.MethodPost, j.payload.Reader())
+	resp, err := pushRequest(j.ctx, j.opts, "/v3/push", http.MethodPost, j.payload.Reader())
 	if err != nil {
 		if e, ok := err.(*Error); ok {
 			// 如果当前推送频次超出限制，则将任务重新放入队列，并休眠等待
@@ -41,6 +42,10 @@ func (j *pushJob) Job() {
 				j.callback(nil, err)
 			}
 		} else {
+			if strings.Contains(err.Error(), "connection refused") {
+				j.queue.Push(j)
+				return
+			}
 			j.callback(nil, err)
 		}
 		return

@@ -83,7 +83,7 @@ func (c *cidItem) Get(ctx context.Context) (string, error) {
 	params.Set("count", strconv.Itoa(c.count))
 
 	router := fmt.Sprintf("/v3/push/cid?%s", params.Encode())
-	resp, err := internalRequest(ctx, c.opts, router, http.MethodGet, nil)
+	resp, err := pushRequest(ctx, c.opts, router, http.MethodGet, nil)
 	if err != nil {
 		return "", err
 	}

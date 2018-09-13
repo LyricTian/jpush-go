@@ -31,6 +31,12 @@ type Payload struct {
 	CID          string        `json:"cid,omitempty"`          // 推送唯一标识符
 }
 
+func (p *Payload) String() string {
+	buf := new(bytes.Buffer)
+	json.NewEncoder(buf).Encode(p)
+	return buf.String()
+}
+
 // Reader 序列化为 JSON 流
 func (p *Payload) Reader() io.Reader {
 	buf := new(bytes.Buffer)
@@ -320,6 +326,12 @@ type Options struct {
 	ApnsProduction  bool   `json:"apns_production"`
 	ApnsCollapseID  string `json:"apns_collapse_id,omitempty"`
 	BigPushDuration int    `json:"big_push_duration,omitempty"`
+}
+
+// SetSendNO 推送序号
+func (o *Options) SetSendNO(sendNO int) *Options {
+	o.SendNO = sendNO
+	return o
 }
 
 // SetApnsProduction 设定 APNs 是否生产环境
