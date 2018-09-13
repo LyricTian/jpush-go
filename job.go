@@ -34,13 +34,15 @@ func (j *pushJob) Job() {
 	resp, err := pushRequest(j.ctx, j.opts, "/v3/push", http.MethodPost, j.payload.Reader())
 	if err != nil {
 		if e, ok := err.(*Error); ok {
-			// 如果当前推送频次超出限制，则将任务重新放入队列，并休眠等待
-			if e.StatusCode == 429 && e.HeaderItem.XRateLimitReset > 0 {
+			if e.StatusCode >= 400 || e.StatusCode < 500 {
 				j.queue.Push(j)
-				time.Sleep(time.Second * time.Duration(e.HeaderItem.XRateLimitReset))
-			} else {
-				j.callback(nil, err)
+				// 如果当前推送频次超出限制，则将任务重新放入队列，并休眠等待
+				if e.HeaderItem != nil && e.HeaderItem.XRateLimitReset > 0 {
+					time.Sleep(time.Second * time.Duration(e.HeaderItem.XRateLimitReset))
+				}
+				return
 			}
+			j.callback(nil, err)
 		} else {
 			if strings.Contains(err.Error(), "connection refused") {
 				j.queue.Push(j)
