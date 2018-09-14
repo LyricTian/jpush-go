@@ -227,6 +227,54 @@ func (n *AndroidNotification) SetTitle(title string) *AndroidNotification {
 	return n
 }
 
+// SetBuilderID 通知栏样式 ID
+func (n *AndroidNotification) SetBuilderID(builderID int) *AndroidNotification {
+	n.BuilderID = builderID
+	return n
+}
+
+// SetPriority 通知栏展示优先级
+func (n *AndroidNotification) SetPriority(priority int) *AndroidNotification {
+	n.Priority = priority
+	return n
+}
+
+// SetCategory 通知栏条目过滤或排序
+func (n *AndroidNotification) SetCategory(category string) *AndroidNotification {
+	n.Category = category
+	return n
+}
+
+// SetStyle 通知栏样式类型
+func (n *AndroidNotification) SetStyle(style int) *AndroidNotification {
+	n.Style = style
+	return n
+}
+
+// SetAlertType 通知提醒方式
+func (n *AndroidNotification) SetAlertType(alertType int) *AndroidNotification {
+	n.AlertType = alertType
+	return n
+}
+
+// SetBigText 大文本通知栏样式
+func (n *AndroidNotification) SetBigText(bigText string) *AndroidNotification {
+	n.BigText = bigText
+	return n
+}
+
+// SetInbox 文本条目通知栏样式
+func (n *AndroidNotification) SetInbox(inbox map[string]interface{}) *AndroidNotification {
+	n.Inbox = inbox
+	return n
+}
+
+// SetBigPicPath 大图片通知栏样式
+func (n *AndroidNotification) SetBigPicPath(bigPicPath string) *AndroidNotification {
+	n.BigPicPath = bigPicPath
+	return n
+}
+
 // SetExtras 扩展字段
 func (n *AndroidNotification) SetExtras(extras map[string]interface{}) *AndroidNotification {
 	n.Extras = extras
@@ -255,9 +303,33 @@ func (n *IOSNotification) SetAlert(alert interface{}) *IOSNotification {
 	return n
 }
 
+// SetSound 通知提示声音
+func (n *IOSNotification) SetSound(sound string) *IOSNotification {
+	n.Sound = sound
+	return n
+}
+
 // SetBadge 应用角标
 func (n *IOSNotification) SetBadge(badge interface{}) *IOSNotification {
 	n.Badge = badge
+	return n
+}
+
+// SetContentAvailable 推送唤醒
+func (n *IOSNotification) SetContentAvailable(contentAvailable bool) *IOSNotification {
+	n.ContentAvailable = contentAvailable
+	return n
+}
+
+// SetMutableContent 通知扩展
+func (n *IOSNotification) SetMutableContent(mutableContent bool) *IOSNotification {
+	n.MutableContent = mutableContent
+	return n
+}
+
+// SetCategory 通知栏条目过滤或排序
+func (n *IOSNotification) SetCategory(category string) *IOSNotification {
+	n.Category = category
 	return n
 }
 
@@ -292,10 +364,21 @@ func (n *WinPhoneNotification) SetTitle(title string) *WinPhoneNotification {
 	return n
 }
 
+// SetOpenPage 点击打开的页面名称
+func (n *WinPhoneNotification) SetOpenPage(openPage string) *WinPhoneNotification {
+	n.OpenPage = openPage
+	return n
+}
+
 // SetExtras 扩展字段
 func (n *WinPhoneNotification) SetExtras(extras map[string]interface{}) *WinPhoneNotification {
 	n.Extras = extras
 	return n
+}
+
+// NewMessage 创建自定义消息实例
+func NewMessage() *Message {
+	return new(Message)
 }
 
 // Message 自定义消息
@@ -306,11 +389,58 @@ type Message struct {
 	Extras      map[string]interface{} `json:"extras,omitempty"`
 }
 
+// SetContent 消息内容本身
+func (m *Message) SetContent(content string) *Message {
+	m.Content = content
+	return m
+}
+
+// SetTitle 消息标题
+func (m *Message) SetTitle(title string) *Message {
+	m.Title = title
+	return m
+}
+
+// SetContentType 消息内容类型
+func (m *Message) SetContentType(contentType string) *Message {
+	m.ContentType = contentType
+	return m
+}
+
+// SetExtras JSON 格式的可选参数
+func (m *Message) SetExtras(extras map[string]interface{}) *Message {
+	m.Extras = extras
+	return m
+}
+
+// NewSmsMessage 创建短信补充实例
+func NewSmsMessage() *SmsMessage {
+	return new(SmsMessage)
+}
+
 // SmsMessage 短信补充
 type SmsMessage struct {
 	TempPara  interface{} `json:"temp_para,omitempty"`
 	TempID    int64       `json:"temp_id"`
 	DelayTime int         `json:"delay_time"`
+}
+
+// SetTempPara 短信模板中的参数
+func (m *SmsMessage) SetTempPara(tempPara interface{}) *SmsMessage {
+	m.TempPara = tempPara
+	return m
+}
+
+// SetTempID 短信补充的内容模板 ID。没有填写该字段即表示不使用短信补充功能
+func (m *SmsMessage) SetTempID(tempID int64) *SmsMessage {
+	m.TempID = tempID
+	return m
+}
+
+// SetDelayTime 单位为秒，不能超过 24 小时。设置为 0，表示立即发送短信。该参数仅对 android 和 iOS 平台有效，Winphone 平台则会立即发送短信。
+func (m *SmsMessage) SetDelayTime(delayTime int) *SmsMessage {
+	m.DelayTime = delayTime
+	return m
 }
 
 // NewOptions 创建可选参数实例
@@ -334,8 +464,32 @@ func (o *Options) SetSendNO(sendNO int) *Options {
 	return o
 }
 
+// SetTimeLive 离线消息保留时长(秒)
+func (o *Options) SetTimeLive(timeLive int) *Options {
+	o.TimeLive = timeLive
+	return o
+}
+
+// SetOverrideMsgID 要覆盖的消息 ID
+func (o *Options) SetOverrideMsgID(overrideMsgID int64) *Options {
+	o.OverrideMsgID = overrideMsgID
+	return o
+}
+
+// SetApnsCollapseID 要覆盖的消息 ID
+func (o *Options) SetApnsCollapseID(apnsCollapseID string) *Options {
+	o.ApnsCollapseID = apnsCollapseID
+	return o
+}
+
 // SetApnsProduction 设定 APNs 是否生产环境
 func (o *Options) SetApnsProduction(prod bool) *Options {
 	o.ApnsProduction = prod
+	return o
+}
+
+// SetBigPushDuration 定速推送时长(分钟)
+func (o *Options) SetBigPushDuration(bigPushDuration int) *Options {
+	o.BigPushDuration = bigPushDuration
 	return o
 }

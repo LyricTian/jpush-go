@@ -68,6 +68,7 @@ func pushRequest(ctx context.Context, opts *options, router, method string, body
 			e.ErrorItem = NewErrorItem(0, string(buf))
 			return nil, e
 		}
+		e.ErrorItem = result.Error
 
 		if code == 429 {
 			header := new(HeaderItem)
