@@ -31,14 +31,10 @@ func main() {
 	defer jpush.Terminate()
 
 	payload := &jpush.Payload{
-		Platform: jpush.NewPlatform().All(),
-		Audience: jpush.NewAudience().All(),
-		Notification: &jpush.Notification{
-			Alert: "推送通知测试",
-		},
-		Options: &jpush.Options{
-			SendNO: 1,
-		},
+		Platform:     jpush.NewPlatform().All(),
+		Audience:     jpush.NewAudience().All(),
+		Notification: jpush.NewNotification().SetAlert("通知测试"),
+		Options:      jpush.NewOptions().SetSendNO(1),
 	}
 	err := jpush.Push(context.Background(), payload, func(result *jpush.PushResult, err error) {
 		if err != nil {
