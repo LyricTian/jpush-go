@@ -19,7 +19,7 @@ func NewClient(maxThread int, opts ...Option) *Client {
 	cli := &Client{
 		opts:      &o,
 		queue:     queue.NewListQueue(maxThread),
-		cidClient: NewCIDClient(1000, opts...),
+		cidClient: NewCIDClient(o.cidCount, opts...),
 	}
 
 	cli.jobPool = &sync.Pool{

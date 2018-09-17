@@ -18,6 +18,7 @@ func TestPush(t *testing.T) {
 		cli := NewClient(2,
 			SetAppKey(appKey),
 			SetMasterSecret(masterSecret),
+			SetCIDCount(2),
 		)
 
 		pushID, err := cli.GetPushID(context.Background())
@@ -52,6 +53,7 @@ func TestPushValidate(t *testing.T) {
 		cli := NewClient(2,
 			SetAppKey(appKey),
 			SetMasterSecret(masterSecret),
+			SetCIDCount(2),
 		)
 
 		payload := &Payload{

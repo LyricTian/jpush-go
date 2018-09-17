@@ -1,7 +1,8 @@
 package jpush
 
 var defaultOptions = options{
-	host: "https://api.jpush.cn",
+	host:     "https://api.jpush.cn",
+	cidCount: 1000,
 }
 
 // Option 配置项
@@ -28,8 +29,16 @@ func SetMasterSecret(masterSecret string) Option {
 	}
 }
 
+// SetCIDCount 设定每次获取CID的数量
+func SetCIDCount(count int) Option {
+	return func(o *options) {
+		o.cidCount = count
+	}
+}
+
 type options struct {
 	host         string
 	appKey       string
 	masterSecret string
+	cidCount     int
 }
