@@ -76,8 +76,9 @@ func (c *Client) PushValidate(ctx context.Context, payload *Payload, callback Pu
 
 // PushResult 推送响应结果
 type PushResult struct {
-	SendNO string `json:"sendno"`
-	MsgID  string `json:"msg_id"`
+	Payload *Payload `json:"-"`
+	SendNO  string   `json:"sendno"`
+	MsgID   string   `json:"msg_id"`
 }
 
 func (r *PushResult) String() string {

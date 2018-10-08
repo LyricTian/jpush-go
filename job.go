@@ -72,11 +72,13 @@ func (j *pushJob) Job() {
 		return
 	}
 
-	var result PushResult
-	err = resp.JSON(&result)
+	result := new(PushResult)
+	err = resp.JSON(result)
 	if err != nil {
 		j.callback(nil, err)
 		return
 	}
-	j.callback(&result, nil)
+
+	result.Payload = j.payload
+	j.callback(result, nil)
 }
