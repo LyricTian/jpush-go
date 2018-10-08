@@ -46,13 +46,13 @@ func (j *pushJob) handleError(err error) {
 			}
 			return
 		}
-		j.callback(nil, err)
+		j.callback(j.ctx, nil, err)
 	} else {
 		if v := err.Error(); strings.Contains(v, "connection refused") {
 			j.queue.Push(j)
 			return
 		}
-		j.callback(nil, err)
+		j.callback(j.ctx, nil, err)
 	}
 }
 
@@ -75,10 +75,9 @@ func (j *pushJob) Job() {
 	result := new(PushResult)
 	err = resp.JSON(result)
 	if err != nil {
-		j.callback(nil, err)
+		j.callback(j.ctx, nil, err)
 		return
 	}
 
-	result.Payload = j.payload
-	j.callback(result, nil)
+	j.callback(j.ctx, result, nil)
 }
