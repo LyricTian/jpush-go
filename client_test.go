@@ -36,7 +36,7 @@ func TestPush(t *testing.T) {
 			},
 			CID: pushID,
 		}
-		err = cli.Push(context.Background(), payload, func(result *PushResult, err error) {
+		err = cli.Push(context.Background(), payload, func(ctx context.Context, result *PushResult, err error) {
 			Convey("async callback", t, func() {
 				So(err, ShouldBeNil)
 				So(result, ShouldNotBeNil)
@@ -66,7 +66,7 @@ func TestPushValidate(t *testing.T) {
 				SendNO: 2,
 			},
 		}
-		err := cli.PushValidate(context.Background(), payload, func(result *PushResult, err error) {
+		err := cli.PushValidate(context.Background(), payload, func(ctx context.Context, result *PushResult, err error) {
 			Convey("async callback", t, func() {
 				So(err, ShouldBeNil)
 				So(result, ShouldNotBeNil)
