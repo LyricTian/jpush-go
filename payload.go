@@ -16,7 +16,7 @@ func (o OS) String() string {
 // 定义推送平台
 const (
 	Android  OS = "android"
-	iOS      OS = "ios"
+	IOS      OS = "ios"
 	WinPhone OS = "winphone"
 )
 
